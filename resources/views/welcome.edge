@@ -2,14 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Hello Adonis</title>
+  <title>Hello Darkness</title>
   {{ css('style') }}
+	{{css('stylesheets/mycss')}}
 </head>
 <body>
   <section>
     <div class="logo"></div>
     <div class="title"></div>
     <div class="subtitle"><p>Babbling some words here</p></div>
+    <div id="canvas" v-on:mousemove="updateXY" v-bind:title="x">
+    	{{x}}
+    	<div id="app" v-bind:style="styleObject" >    		
+    		<svg width="100" height="100"  id="svg">
+			  <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow"/>
+			</svg>
+    	</div>
+    </div>   
   </section>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+	  	var canvas  = new Vue({
+		el: "#canvas",
+		data:{
+			t: -50 ,
+			l: -50,
+			x:400,
+			y:400,
+			styleObject:{			
+				left: this.x + 'px',
+				margin: 0,
+				padding: 0,
+				top: this.y + 'px'
+			}
+		},
+		methods:{
+			calculateX: function(){
+				var a = event.offsetX;
+				if(a>400){
+					var valueToAdd = a - 400;					
+					return 400 - valueToAdd;
+				}
+				else if(a<400){
+					var valueToAdd = 400 - a;
+					return 400 + valueToAdd;
+				}
+				else{
+					return 400;
+				}
+			},
+			calculateY: function(){
+				var b = event.offsetY;
+				if(b>400){
+					var valueToAdd = b - 400;
+					return 400 - valueToAdd;
+				}
+				else if(b<400){
+					var valueToAdd = 400 - b;
+					return 400 + valueToAdd;
+				}
+				else{
+					return 400;
+				}
+			},
+			updateXY: function(event){
+				this.x = this.calculateX();
+				this.y = this.calculateY();												
+			}			
+		}
+	})
+  </script>  
 </body>
 </html>
